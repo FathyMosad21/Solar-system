@@ -1,9 +1,11 @@
 name: solar system workflow
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - Fathy
+      - main
+      - 'feature/**'
 
 env:
   MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
@@ -42,7 +44,7 @@ jobs:
 
       - name: archive test result
         if: always()
-        uses: actions/upload-artifact@v4.0.1
+        uses: actions/upload-artifact@v7.0.1
         with:
           name: Mocha-Test-Result
           path: test-results.xml
