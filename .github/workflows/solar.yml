@@ -3,7 +3,7 @@ name: solar system workflow
 on:
   push:
     branches:
-      - 'feature/**'
+      - Fathy
 
 env:
   MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
