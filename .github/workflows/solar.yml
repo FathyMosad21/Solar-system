@@ -1,0 +1,48 @@
+name: solar system workflow
+
+on:
+  push:
+    branches:
+      - 'feature/**'
+
+env:
+  MONGO_URI: 'mongodb+srv://supercluster.d83jj.mongodb.net/superData'
+  MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
+  MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+
+jobs:
+  unit-testing:
+    name: Unit Testing
+    strategy:
+      matrix:
+        nodejs_version: [18, 19, 20]
+        os: [ubuntu-latest, macos-latest]
+      
+      exclude:
+        - nodejs_version: 18
+          os: macos-latest
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setip NodeJS version - ${{ matrix.nodejs_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.nodejs_version }}
+
+      - name: install dep
+        run: npm install
+
+      - name: unit testing
+        continue-on-error: true
+        run: npm test
+
+      - name: archive test result
+        if: always()
+        uses: actions/upload-artifact@v4.0.1
+        with:
+          name: Mocha-Test-Result
+          path: test-results.xml
