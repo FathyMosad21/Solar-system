@@ -96,7 +96,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true # تم تحويلها لـ true لترتفع الـ Image لحسابك
+          file: ./Dockerfile  # تحديد مسار الملف صراحة لضمان رؤيته
+          push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
 
       - name: docker image test
